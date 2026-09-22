@@ -2,6 +2,7 @@
 
 import json
 import os
+import platform
 import secrets
 import socket
 import sqlite3
@@ -111,9 +112,11 @@ def run() -> dict:
             raise RuntimeError("Disposable server did not become ready")
 
         try:
+            began = time.perf_counter()
             start(data)
             assert any(w["id"] == str(seed.id) for w in request("/api/workspaces"))
             assert request("/health")["schema"] == SCHEMA_VERSION
+            upgrade_ready_ms = (time.perf_counter() - began) * 1000
             request("/api/workspaces", credential="invalid", expected=401)
             workspace = request(
                 "/api/workspaces", {"name": "Operational drill", "mode": "qa"}, expected=201
@@ -168,12 +171,18 @@ def run() -> dict:
 
             with ThreadPoolExecutor(max_workers=4) as executor:
                 timings = list(executor.map(read_sample, range(100)))
+            began = time.perf_counter()
             stop()
             start(data)
             assert len(request(path + "/artifacts")) == 12
             request("/api/workspaces", credential=key["token"], expected=401)
+            restart_verified_ms = (time.perf_counter() - began) * 1000
             stop()
+            began = time.perf_counter()
             backup = snapshot(data / "aegis.db", root / "checkpoint.db")
+            backup_ms = (time.perf_counter() - began) * 1000
+            backup_bytes = (root / "checkpoint.db").stat().st_size
+            began = time.perf_counter()
             restored = root / "restored"
             restored.mkdir()
             restore(root / "checkpoint.db", restored / "aegis.db", backup["sha256"])
@@ -182,6 +191,7 @@ def run() -> dict:
             assert len(request(path + "/artifacts")) == 12
             assert {j["id"] for j in request(path + "/jobs")} == submitted
             request("/api/workspaces", credential=key["token"], expected=401)
+            restore_verified_ms = (time.perf_counter() - began) * 1000
             return {
                 "timestamp": datetime.now(UTC).isoformat(),
                 "status": "passed",
@@ -191,6 +201,15 @@ def run() -> dict:
                 "http_reads": 100,
                 "median_ms": round(statistics.median(timings), 3),
                 "p95_ms": round(sorted(timings)[94], 3),
+                "environment": {"os": platform.system(), "python": platform.python_version()},
+                "recovery": {
+                    "upgrade_ready_ms": round(upgrade_ready_ms, 3),
+                    "restart_verified_ms": round(restart_verified_ms, 3),
+                    "backup_ms": round(backup_ms, 3),
+                    "backup_bytes": backup_bytes,
+                    "restore_verified_ms": round(restore_verified_ms, 3),
+                    "notice": "Synthetic local timings; not a production RTO or RPO guarantee.",
+                },
                 "checks": [
                     "previous-schema upgrade preserves existing workspace",
                     "authenticated HTTP",

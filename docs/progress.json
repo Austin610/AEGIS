@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-22T09:22:16.694695+00:00",
+  "updated_at": "2026-09-22T09:33:34.048033+00:00",
   "basis": "Verified release acceptance criteria, separate from full blueprint completion",
   "blueprint_complete": false,
   "completed": [
@@ -25,7 +25,7 @@
     "postgres": "24 deletion/recovery checks passed plus final 11-test PostgreSQL expiry suite",
     "browser": "10 Playwright workflows passed, including reviewed single-file recovery expiry",
     "live_app": "Schema 6; durable workers enabled on 127.0.0.1:8766; pre-upgrade backup verified",
-    "load": "Real-process schema upgrade, durable jobs, restart and restore drill passed; 100 reads at concurrency 4, local p95 26.582 ms",
+    "load": "2026-09-22 disposable Windows drill passed: 12 jobs, 100 reads, p95 26.712 ms; restart verified in 2167.646 ms; restore verified in 1693.726 ms. Synthetic baseline only.",
     "deletion_preview": "Local reviewed deletion and managed recovery expiry verified; live destructive policies disabled"
   },
   "next": [

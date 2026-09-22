@@ -162,6 +162,10 @@ remain protected. This does not enable scheduled deletion or remove external cop
 
 ## Real-process operational drill
 
+Use the [deployment acceptance record](deployment-acceptance.md) to establish
+operating targets and collect deployment-specific evidence. The drill reports
+upgrade, restart, backup and restore timings as a development baseline.
+
 Run `.venv/Scripts/python.exe scripts/operational_drill.py` to exercise a disposable
 schema-5 upgrade, real loopback HTTP, 12 durable jobs at concurrency four, 100 reads,
 process restart, verified backup restore into a new directory, and persistence of
