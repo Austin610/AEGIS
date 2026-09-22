@@ -1,0 +1,13 @@
+{
+  "name": "aegis-dashboard-development",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write src/aegis/web/*.js src/aegis/web/*.css src/aegis/web/*.html",
+    "check": "node --check src/aegis/web/app.js && prettier --check src/aegis/web/*.js src/aegis/web/*.css src/aegis/web/*.html",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "prettier": "3.6.2"
+  }
+}

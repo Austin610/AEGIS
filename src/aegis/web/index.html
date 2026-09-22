@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AEGIS · Assurance workbench</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+    <script src="/planning.js" defer></script>
+  </head>
+  <body>
+    <section id="login" class="login-screen" hidden>
+      <div class="login-card">
+        <div class="brand">AEGIS <span>◈</span></div>
+        <h1>Your local assurance workspace</h1>
+        <p>
+          Sign in using the access token created when the local server starts.
+          Your data stays on this computer.
+        </p>
+        <form id="login-form">
+          <label
+            >Local access token<input
+              id="token"
+              type="password"
+              autocomplete="off"
+              required /></label
+          ><button class="primary" type="submit">Open workbench →</button>
+        </form>
+        <p class="muted small">
+          Token location: the server's data directory, in
+          <code>access-token</code>.
+        </p>
+        <div id="login-error" role="alert"></div>
+        <a id="github-login" href="/api/auth/github/start" hidden
+          >Sign in with GitHub</a
+        >
+      </div>
+    </section>
+    <div id="shell" hidden>
+      <aside>
+        <a class="brand" href="#overview">AEGIS <span>◈</span></a>
+        <div class="workspace-label">WORKSPACE</div>
+        <select id="workspace-select" aria-label="Current workspace"></select>
+        <div class="actions">
+          <button id="previous-workspaces" aria-label="Previous workspaces">
+            Previous</button
+          ><button id="next-workspaces" aria-label="Next workspaces">
+            Next
+          </button>
+        </div>
+        <button id="new-workspace" class="subtle">＋ New workspace</button>
+        <nav aria-label="Workbench">
+          <button data-view="overview" class="selected">Overview</button
+          ><button data-view="planning">Backlogs & sprints</button
+          ><button data-view="inbox">Findings inbox</button
+          ><button data-view="coverage">Requirements coverage</button
+          ><button data-view="readiness">Build & readiness</button
+          ><button data-view="runs">Runs & findings</button
+          ><button data-view="artifacts">Evidence & artifacts</button
+          ><button data-view="baselines">Baselines</button
+          ><button data-view="workflows">Run a workflow</button
+          ><button data-view="scope">Scope & policy</button
+          ><button data-view="audit">Audit history</button
+          ><button data-view="governance">Data policies</button
+          ><button data-view="access" id="access-navigation">
+            Access management
+          </button>
+        </nav>
+        <div class="sidebar-footer">
+          <span class="dot"></span> Local · Offline execution
+          <p id="mode-label"></p>
+          <button id="logout" class="subtle">Sign out</button>
+        </div>
+      </aside>
+      <div class="main-shell">
+        <header>
+          <div>
+            <span class="eyebrow" id="breadcrumb">WORKBENCH / OVERVIEW</span>
+            <h1 id="page-title">Overview</h1>
+          </div>
+          <div class="header-actions">
+            <span id="sync-state" class="muted small">Connecting</span
+            ><button id="freeze-pages">Freeze list pages</button
+            ><button id="refresh">Refresh</button>
+          </div>
+        </header>
+        <div id="notice" role="status" hidden></div>
+        <main id="content"></main>
+        <footer>
+          AEGIS 0.1 · Local assurance and offline analysis · Observations retain
+          their source and verification status.
+        </footer>
+      </div>
+    </div>
+    <dialog id="workspace-dialog">
+      <form id="workspace-form">
+        <div class="eyebrow">NEW WORKSPACE</div>
+        <h2>Give your work a home</h2>
+        <label
+          >Name<input
+            id="workspace-name"
+            required
+            maxlength="100"
+            placeholder="e.g. Checkout API" /></label
+        ><label>Mode<select id="workspace-mode"></select></label>
+        <p class="muted">
+          The mode determines which workflows are available. Scope is required
+          before running a workflow.
+        </p>
+        <div class="actions">
+          <button type="button" id="workspace-close">Cancel</button
+          ><button type="submit" class="primary">Create workspace</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="detail-dialog">
+      <div class="dialog-head">
+        <h2 id="detail-title">Run detail</h2>
+        <button id="detail-close" aria-label="Close details">Close</button>
+      </div>
+      <div id="detail-content"></div>
+    </dialog>
+  </body>
+</html>

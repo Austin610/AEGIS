@@ -1,0 +1,150 @@
+{
+  "updated_at": "2026-09-20T16:18:03.786384+00:00",
+  "basis": "Verified local acceptance criteria, separate from full blueprint completion",
+  "blueprint_complete": false,
+  "completed": [
+    "M0"
+  ],
+  "local_platform": {
+    "adapters": 9,
+    "modes": 9,
+    "schema_version": 6,
+    "tests_passed": 205
+  },
+  "verification": {
+    "tests": "205 passed; three PostgreSQL-only checks skipped in SQLite run",
+    "lint": "passed",
+    "types": "passed for 37 modules",
+    "format": "passed",
+    "frontend": "syntax and formatting passed",
+    "wheel_and_sdist": "built successfully on 2026-09-20",
+    "isolated_wheel_install": "passed",
+    "installed_http_smoke": "passed",
+    "docker": "unverified: unavailable",
+    "remote_ci": "not run",
+    "postgres": "24 deletion/recovery checks passed plus final 11-test PostgreSQL expiry suite",
+    "browser": "10 Playwright workflows passed, including reviewed single-file recovery expiry",
+    "live_app": "Schema 6; durable workers enabled on 127.0.0.1:8766; pre-upgrade backup verified",
+    "load": "100 development reads, concurrency 4, no failures; p95 18.101 ms",
+    "deletion_preview": "Local reviewed deletion and managed recovery expiry verified; live destructive policies disabled"
+  },
+  "next": [
+    "GitHub live OAuth setup and verification",
+    "GitHub repository selection and remote Actions run",
+    "Docker and production operational qualification",
+    "Deeper specialized mode milestones"
+  ],
+  "excluded": "Autonomous offensive discovery, exploitation and live vulnerability reproduction",
+  "refresh": "In-app Build & readiness records local acceptance; full blueprint completion is tracked separately",
+  "pagination": "Frozen workspace-resource snapshots available; workspace selector remains live offset pagination",
+  "implemented_this_session": [
+    "Dashboard pagination",
+    "Scoped reader/analyst/admin credentials and revocation",
+    "Retention preview and reversible batch archiving",
+    "Integrity-checked workspace exports",
+    "SQLite backup and restore",
+    "PostgreSQL persistence and atomic transfer",
+    "SARIF result import and searchable viewer",
+    "Minimum/maximum metrics and numeric evidence provenance"
+  ],
+  "acceptance": [
+    {
+      "id": "foundation",
+      "area": "Features",
+      "title": "Local evidence, scopes, jobs and baselines",
+      "status": "verified",
+      "evidence": "Existing Python and browser acceptance tests; offline execution only."
+    },
+    {
+      "id": "storage",
+      "area": "Features",
+      "title": "Backup, restore and optional PostgreSQL",
+      "status": "verified",
+      "evidence": "SQLite snapshots and isolated PostgreSQL integration checks completed."
+    },
+    {
+      "id": "workflow",
+      "area": "Workflows",
+      "title": "Findings, triage, retest and stakeholder reports",
+      "status": "verified",
+      "evidence": "API checks cover source identity, permissions, revision conflicts and closure evidence."
+    },
+    {
+      "id": "coverage",
+      "area": "Workflows",
+      "title": "Requirements coverage and offline mode acceptance",
+      "status": "verified",
+      "evidence": "Coverage browser checks and one persisted offline result scenario per mode pass. This does not establish completion of every original blueprint milestone."
+    },
+    {
+      "id": "pagination",
+      "area": "Features",
+      "title": "Snapshot-consistent enumeration",
+      "status": "verified",
+      "evidence": "Freeze runs/jobs/artifacts/baselines/audit pages for five minutes. Workspace selection and live mode retain offset semantics."
+    },
+    {
+      "id": "retention",
+      "area": "Features",
+      "title": "Scheduled reversible retention",
+      "status": "verified",
+      "evidence": "Scheduling, persistent intervals and baseline protection pass on SQLite/PostgreSQL."
+    },
+    {
+      "id": "scrum",
+      "area": "Workflows",
+      "title": "Scrum backlogs, sprint board and reviews",
+      "status": "verified",
+      "evidence": "Browser/API checks cover planning, Done criteria, child work, progress and reviews."
+    },
+    {
+      "id": "invariants",
+      "area": "Features",
+      "title": "Declarative recorded JSON invariants",
+      "status": "verified",
+      "evidence": "Typed comparisons preserve unknown/error outcomes and reject incompatible baselines."
+    },
+    {
+      "id": "deletion",
+      "area": "Production",
+      "title": "Permanent deletion lifecycle",
+      "status": "verified",
+      "evidence": "Reviewed run/artifact deletion, SQLite/PostgreSQL recovery and managed backup expiry pass. Live deletion and expiry stay disabled; unmanaged copies require operator handling."
+    },
+    {
+      "id": "identity",
+      "area": "Team operation",
+      "title": "Identity-provider sign-in",
+      "status": "pending",
+      "evidence": "GitHub OAuth/PKCE and role removal pass mock tests. Live acceptance requires OAuth app settings."
+    },
+    {
+      "id": "workers",
+      "area": "Team operation",
+      "title": "Distributed durable job coordination",
+      "status": "verified",
+      "evidence": "SQLite/PostgreSQL process races, crash rollback, fenced retries and browser workflows pass. One API plus offline workers; production multi-host qualification remains pending."
+    },
+    {
+      "id": "containers",
+      "area": "Production",
+      "title": "Docker deployment verification",
+      "status": "pending",
+      "evidence": "Build and run the image, then exercise persistence and health checks."
+    },
+    {
+      "id": "ci",
+      "area": "Production",
+      "title": "Remote CI execution",
+      "status": "pending",
+      "evidence": "A successful local run does not establish remote CI success."
+    },
+    {
+      "id": "operations",
+      "area": "Production",
+      "title": "Load, recovery and upgrade acceptance",
+      "status": "pending",
+      "evidence": "Local load smoke, restore and migrations pass. Production capacity and deployment recovery remain unverified."
+    }
+  ]
+}

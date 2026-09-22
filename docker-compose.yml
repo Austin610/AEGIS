@@ -1,0 +1,28 @@
+services:
+  aegis:
+    build: .
+    environment:
+      AEGIS_DATABASE_URL: ${AEGIS_DATABASE_URL:-}
+    read_only: true
+    tmpfs: ["/tmp"]
+    ports:
+      - "127.0.0.1:8766:8766"
+    volumes:
+      - aegis_data:/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+  postgres:
+    image: postgres:17
+    profiles: ["storage"]
+    environment:
+      POSTGRES_USER: aegis
+      POSTGRES_DB: aegis
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # No host port. PostgreSQL refuses initialization without a password.
+# Set AEGIS_DATABASE_URL to use the optional postgres service. Otherwise SQLite is used.
+volumes:
+  postgres_data:
+  aegis_data:
