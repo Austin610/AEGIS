@@ -52,9 +52,6 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-    defaults:
-      run:
-        working-directory: ${{ vars.AEGIS_WORKING_DIRECTORY || '.' }}
         image: postgres:17
         env:
           POSTGRES_USER: aegis_test
