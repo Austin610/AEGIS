@@ -1,4 +1,4 @@
-# Durable offline worker acceptance — 2026-09-19
+# Durable offline worker acceptance â€” 2026-09-19
 
 Schema 6 and durable mode are enabled in the local app on port 8766.
 The pre-upgrade SQLite backup is `.aegis/backups/before-durable-workers-20260919.db`;

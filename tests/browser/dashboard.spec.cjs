@@ -212,4 +212,3 @@ test('backup expiry reviews exactly one managed recovery file', async ({page}) =
   await apply.click();
   await expect(page.getByText('Recovery file removed. Preview again before reviewing another file.')).toBeVisible();
 });
-
