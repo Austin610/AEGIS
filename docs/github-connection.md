@@ -62,6 +62,20 @@ Live sign-in requires the OAuth client ID, locally configured client secret,
 matching callback URL, and numeric account-to-role/workspace mappings described above.
 Keep the client secret out of chat and source control.
 
+Before restarting AEGIS, run `.venv/Scripts/aegis.exe check-github` in the same
+environment that will launch the server. It reports missing variable names,
+callback/port errors, and invalid role mappings without printing setting values.
+Exit code 0 means the local configuration is ready for a login attempt; exit code
+1 means configuration needs attention. This does not contact GitHub, validate the
+client secret with the provider, or confirm that mapped workspace IDs exist.
+AEGIS does not automatically load `.env` files.
+
+For live acceptance, sign in with an explicitly mapped account, check its role
+and workspace access, then remove its mapping and confirm its next request is
+denied. Restore the intended mapping afterward. Record the result without
+recording authorization codes, cookies, or OAuth secrets. A passing preflight
+alone does not complete the identity-provider release checkpoint.
+
 `.github/workflows/ci.yml` is repository-independent and runs on pushes, pull
 requests and manual dispatch. It includes Windows/Linux Python and browser checks,
 PostgreSQL checks, and container verification. The default assumes AEGIS is the

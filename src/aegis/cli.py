@@ -20,6 +20,17 @@ app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 app.add_typer(assurance_app, name="assurance", help="Offline assurance workflows")
 
 
+@app.command("check-github")
+def check_github_command() -> None:
+    """Check local OAuth settings without displaying secrets or contacting GitHub."""
+    from aegis.github_setup import check_github_setup
+
+    result = check_github_setup()
+    typer.echo(json.dumps(result, indent=2))
+    if result["status"] != "ready_for_live_login":
+        raise typer.Exit(1)
+
+
 @app.command("serve")
 def serve_command(
     data_dir: Annotated[Path, typer.Option()] = Path(".aegis/app"),
