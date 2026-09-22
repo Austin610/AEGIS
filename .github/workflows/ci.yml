@@ -2,11 +2,11 @@ name: AEGIS verification
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
-defaults:
-  run:
-    working-directory: ${{ vars.AEGIS_WORKING_DIRECTORY || '.' }}
 jobs:
   test:
+    defaults:
+      run:
+        working-directory: ${{ vars.AEGIS_WORKING_DIRECTORY || '.' }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -34,6 +34,9 @@ jobs:
       - run: npx playwright test
       - run: python -m build
   container:
+    defaults:
+      run:
+        working-directory: ${{ vars.AEGIS_WORKING_DIRECTORY || '.' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -43,9 +46,15 @@ jobs:
       - run: python scripts/container_smoke.py
 
   postgres:
+    defaults:
+      run:
+        working-directory: ${{ vars.AEGIS_WORKING_DIRECTORY || '.' }}
     runs-on: ubuntu-latest
     services:
       postgres:
+    defaults:
+      run:
+        working-directory: ${{ vars.AEGIS_WORKING_DIRECTORY || '.' }}
         image: postgres:17
         env:
           POSTGRES_USER: aegis_test

@@ -1,7 +1,8 @@
 # GitHub sign-in and GitHub Actions
 
-The local implementation does not require a repository. No repository was created,
-no code was pushed, and no live GitHub login or Actions run has been performed.
+The project is published at https://github.com/Austin610/AEGIS on `main`, with
+AEGIS at the repository root. GitHub Actions is connected; remote validation is
+in progress. Live GitHub OAuth acceptance still requires the configuration below.
 
 ## Sign-in configuration
 
