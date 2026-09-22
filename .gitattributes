@@ -1,0 +1,4 @@
+# Keep formatter input identical on Windows and Unix runners.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
