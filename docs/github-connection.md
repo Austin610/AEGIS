@@ -1,8 +1,8 @@
 # GitHub sign-in and GitHub Actions
 
 The project is published at https://github.com/Austin610/AEGIS on `main`, with
-AEGIS at the repository root. GitHub Actions is connected; remote validation is
-in progress. Live GitHub OAuth acceptance still requires the configuration below.
+AEGIS at the repository root. GitHub Actions is connected and all four jobs passed on 2026-09-22.
+[Verification evidence](https://github.com/Austin610/AEGIS/actions/runs/35709166879) covers commit `b953bf8`. Live GitHub OAuth acceptance still requires the configuration below.
 
 ## Sign-in configuration
 
@@ -49,17 +49,18 @@ Implementation follows [GitHub's OAuth authorization flow](https://docs.github.c
 Tests mock only the two fixed GitHub HTTPS endpoints; a real OAuth application is
 still required for live acceptance.
 
-## Information needed to connect the repository and enable remote CI
+## Connected repository and remaining setup
 
-1. GitHub owner/organization and repository name (or the repository URL).
-2. Default branch and the branch on which to publish this implementation.
-3. Whether AEGIS occupies the repository root or a subdirectory. Prefer a dedicated
-   repository containing this `aegis` directory's contents; the parent workspace
-   contains unrelated files and must not be published wholesale.
-4. An authenticated account with push permission and permission to enable Actions;
-   organization approval if its policy restricts Actions or OAuth applications.
-5. The desired required status checks and permission to configure branch protection,
-   if branch protection is wanted.
+- Repository: [Austin610/AEGIS](https://github.com/Austin610/AEGIS).
+- Default and publication branch: `main`.
+- Layout: AEGIS occupies the repository root; no working-directory variable is needed.
+- Authenticated push access and GitHub Actions execution have been confirmed.
+
+No further repository details are required for CI. Optional branch protection still
+requires choosing required status checks and approving the repository policy.
+Live sign-in requires the OAuth client ID, locally configured client secret,
+matching callback URL, and numeric account-to-role/workspace mappings described above.
+Keep the client secret out of chat and source control.
 
 `.github/workflows/ci.yml` is repository-independent and runs on pushes, pull
 requests and manual dispatch. It includes Windows/Linux Python and browser checks,

@@ -89,15 +89,17 @@ CRITERIA = [
         "containers",
         "Production",
         "Docker deployment verification",
-        "pending",
-        "Build and run the image, then exercise persistence and health checks.",
+        "verified",
+        "GitHub Actions built the image and verified health, authentication "
+        "and restart persistence on 2026-09-22.",
     ),
     (
         "ci",
         "Production",
         "Remote CI execution",
-        "pending",
-        "A successful local run does not establish remote CI success.",
+        "verified",
+        "GitHub Actions run 35709166879 passed Windows/Linux tests and browser workflows, "
+        "PostgreSQL integration and Docker verification on 2026-09-22.",
     ),
     (
         "operations",
