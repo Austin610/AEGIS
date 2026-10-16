@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+<title id="title">AEGIS — Evidence. Assurance. Delivery.</title>
+<desc id="desc">A dark navy banner with a mint shield and a subtle grid. An offline assurance workbench.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101f31"/><stop offset="1" stop-color="#071019"/></linearGradient><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#23394b" stroke-width="1"/></pattern></defs>
+<rect width="1200" height="320" rx="20" fill="url(#bg)"/>
+<rect width="1200" height="320" rx="20" fill="url(#grid)" opacity=".35"/>
+<path d="M928 60l100 36v72c0 51-45 87-100 109-55-22-100-58-100-109V96z" fill="#112c34" stroke="#78e4c1" stroke-width="2"/>
+<path d="M880 163l32 32 66-72" fill="none" stroke="#78e4c1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="64" y="54" width="5" height="23" rx="2" fill="#78e4c1"/>
+<text x="82" y="71" fill="#a0b8ca" font-family="Segoe UI,Arial,sans-serif" font-size="14" letter-spacing="3">OFFLINE ASSURANCE WORKBENCH</text>
+<text x="60" y="160" fill="#f2f7fb" font-family="Segoe UI,Arial,sans-serif" font-size="76" font-weight="700" letter-spacing="8">AEGIS</text>
+<text x="65" y="207" fill="#78e4c1" font-family="Segoe UI,Arial,sans-serif" font-size="26">Evidence. Assurance. Delivery.</text>
+<text x="65" y="257" fill="#a0b8ca" font-family="Segoe UI,Arial,sans-serif" font-size="17">Turn recorded observations into traceable decisions.</text>
+</svg>
