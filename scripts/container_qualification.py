@@ -7,7 +7,7 @@ import tempfile
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from uuid import uuid4
 
@@ -33,10 +33,17 @@ def wait_for(name: str) -> tuple[str, float]:
     raise RuntimeError("Disposable Docker container did not become healthy")
 
 
-def request(root: str, token: str, body: dict | None = None) -> object:
+def request(
+    root: str,
+    token: str,
+    body: dict | None = None,
+    path: str = "/api/workspaces",
+    method: str | None = None,
+) -> object:
     req = urllib.request.Request(
-        root + "/api/workspaces",
+        root + path,
         data=json.dumps(body).encode() if body is not None else None,
+        method=method,
         headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"},
     )
     with urllib.request.urlopen(req, timeout=10) as response:
@@ -58,6 +65,8 @@ def run() -> dict:
                 docker(
                     "run",
                     "-d",
+                    "-e",
+                    "AEGIS_DURABLE_JOBS=1",
                     "--name",
                     name,
                     "-p",
@@ -83,6 +92,47 @@ def run() -> dict:
                     )
                 )
             ids = {item["id"] for item in created}
+            workspace = created[0]["id"]
+            path = "/api/workspaces/" + workspace
+            now = datetime.now(UTC)
+            request(
+                root,
+                token,
+                {
+                    "workspace_id": workspace,
+                    "allowed_targets": ["fixture://local/sample"],
+                    "capabilities": ["evidence.import", "fixture.evaluate"],
+                    "starts_at": (now - timedelta(minutes=1)).isoformat(),
+                    "expires_at": (now + timedelta(hours=1)).isoformat(),
+                },
+                path=path + "/scope",
+                method="PUT",
+            )
+
+            def submit(index: int) -> str:
+                result = request(
+                    root,
+                    token,
+                    {
+                        "adapter_id": "notes",
+                        "target": "fixture://local/sample",
+                        "payload": {"title": "Container drill", "note": f"Observation {index}"},
+                    },
+                    path=path + "/jobs",
+                )
+                return result["id"]
+
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                submitted = set(pool.map(submit, range(12)))
+            deadline = time.monotonic() + 30
+            while time.monotonic() < deadline:
+                jobs = request(root, token, path=path + "/jobs")
+                if len(jobs) == 12 and all(job["status"] == "succeeded" for job in jobs):
+                    break
+                time.sleep(0.1)
+            assert {job["id"] for job in jobs} == submitted
+            assert all(job["status"] == "succeeded" for job in jobs)
+            assert len(request(root, token, path=path + "/artifacts")) == 12
 
             def read(_: int) -> float:
                 began = time.perf_counter()
@@ -102,6 +152,8 @@ def run() -> dict:
             docker(
                 "run",
                 "-d",
+                "-e",
+                "AEGIS_DURABLE_JOBS=1",
                 "--name",
                 restored_name,
                 "-p",
@@ -112,12 +164,17 @@ def run() -> dict:
             )
             restored_root, _ = wait_for(restored_name)
             assert {item["id"] for item in request(restored_root, token)} == ids
+            assert {
+                job["id"] for job in request(restored_root, token, path=path + "/jobs")
+            } == submitted
+            assert len(request(restored_root, token, path=path + "/artifacts")) == 12
             restore_verified_ms = (time.perf_counter() - began) * 1000
             return {
                 "timestamp": datetime.now(UTC).isoformat(),
                 "status": "passed",
                 "scope": "Disposable local Docker/SQLite fixture",
                 "workspaces": len(ids),
+                "durable_jobs": len(submitted),
                 "reads": len(timings),
                 "concurrency": 4,
                 "p95_read_ms": round(sorted(timings)[94], 3),

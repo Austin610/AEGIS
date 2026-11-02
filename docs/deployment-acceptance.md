@@ -53,10 +53,11 @@ Do not infer acceptance from synthetic latency results or test counts.
 ## Local Docker baseline — 2026-11-02
 
 Run `python scripts/container_qualification.py` after building `aegis-local`.
-The disposable Windows Docker Desktop run passed with 12 workspaces, 100 reads
-at concurrency four, p95 read latency 32.358 ms, container startup 1194.668 ms,
-backup 15.349 ms (163,840 bytes), and verified restore in a separate container
-1017.5 ms. Evidence is stored locally in
+The expanded disposable Windows Docker Desktop run passed with 12 workspaces,
+12 durable jobs, 12 artifacts, and 100 reads at concurrency four. The 12 jobs and
+artifacts survived a verified restore into a separate container. The latest sample
+had p95 read latency 35.562 ms, container startup 1397.915 ms, backup 15.118 ms
+(212,992 bytes), and restore verification 1192.37 ms. Evidence is stored locally in
 `.aegis/verification/container-qualification.json`. The drill uses synthetic
 small data and does not establish a production RTO, RPO, backup schedule, or
 representative capacity. The operations checkpoint remains pending.
