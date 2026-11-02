@@ -2,6 +2,7 @@ const { defineConfig } = require('@playwright/test');
 module.exports = defineConfig({
   testDir: './tests/browser',
   workers: 1,
+  retries: process.env.CI ? 1 : 0,
   use: {
     baseURL: 'http://127.0.0.1:8878',
     channel: process.env.AEGIS_BROWSER_CHANNEL || (process.platform === 'win32' && !process.env.CI ? 'chrome' : undefined),
