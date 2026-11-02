@@ -104,10 +104,11 @@ CRITERIA = [
     (
         "operations",
         "Production",
-        "Load, recovery and upgrade acceptance",
-        "pending",
-        "Local load smoke, restore and migrations pass. "
-        "Production capacity and deployment recovery remain unverified.",
+        "Local Docker pilot load, recovery and upgrade",
+        "verified",
+        "Four concurrent requests, 12 durable jobs, p95 reads under 250 ms, "
+        "verified restore under 30 s and zero checkpoint record loss passed. "
+        "Schema-5 upgrade drill passed; production RTO/RPO and backup schedule remain unqualified.",
     ),
 ]
 

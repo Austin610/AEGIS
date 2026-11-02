@@ -13,6 +13,9 @@ from uuid import uuid4
 
 from aegis.backup import restore, snapshot
 
+PILOT_P95_READ_MS = 250
+PILOT_RESTORE_MS = 30_000
+
 
 def docker(*args: str) -> str:
     return subprocess.check_output(["docker", *args], text=True).strip()
@@ -169,6 +172,9 @@ def run() -> dict:
             } == submitted
             assert len(request(restored_root, token, path=path + "/artifacts")) == 12
             restore_verified_ms = (time.perf_counter() - began) * 1000
+            p95_read_ms = sorted(timings)[94]
+            assert p95_read_ms <= PILOT_P95_READ_MS, "Pilot read latency target missed"
+            assert restore_verified_ms <= PILOT_RESTORE_MS, "Pilot restore target missed"
             return {
                 "timestamp": datetime.now(UTC).isoformat(),
                 "status": "passed",
@@ -177,11 +183,19 @@ def run() -> dict:
                 "durable_jobs": len(submitted),
                 "reads": len(timings),
                 "concurrency": 4,
-                "p95_read_ms": round(sorted(timings)[94], 3),
+                "p95_read_ms": round(p95_read_ms, 3),
                 "startup_ms": round(startup_ms, 3),
                 "backup_ms": round(backup_ms, 3),
                 "backup_bytes": backup["bytes"],
                 "restore_verified_ms": round(restore_verified_ms, 3),
+                "pilot_targets": {
+                    "concurrent_requests": 4,
+                    "durable_jobs": 12,
+                    "p95_read_ms_max": PILOT_P95_READ_MS,
+                    "restore_verified_ms_max": PILOT_RESTORE_MS,
+                    "checkpoint_record_loss_max": 0,
+                },
+                "checkpoint_record_loss": 0,
                 "notice": "Synthetic local measurements; no production RTO/RPO guarantee.",
             }
         finally:

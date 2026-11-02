@@ -1,6 +1,6 @@
 # Deployment acceptance record
 
-Status: local Docker target selected; operating requirements and sign-off pending.
+Status: small local Docker pilot targets accepted; production qualification remains open.
 Passing CI and the disposable local drill does not complete production qualification.
 
 ## Agree on the deployment
@@ -61,3 +61,16 @@ had p95 read latency 35.562 ms, container startup 1397.915 ms, backup 15.118 ms
 `.aegis/verification/container-qualification.json`. The drill uses synthetic
 small data and does not establish a production RTO, RPO, backup schedule, or
 representative capacity. The operations checkpoint remains pending.
+
+## Small local pilot acceptance — 2026-11-02
+
+The selected pilot targets are four concurrent requests, 12 durable jobs, p95
+read latency at most 250 ms, and verified restore within 30 seconds. The
+checkpoint recovery target is zero missing workspace, job, or artifact records
+from the completed backup. The qualification script now enforces these limits.
+
+Observed: 12 workspaces, 12 succeeded jobs and 12 artifacts; 100 reads with
+p95 40.579 ms; verified restore in 2257.397 ms; no missing checkpoint
+records. The separate schema-5 upgrade drill passed with 12 jobs and 100 reads.
+This qualifies the **small local Docker pilot** only. An ongoing backup schedule,
+maximum backup age, production RTO/RPO and larger workload remain unqualified.
