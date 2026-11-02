@@ -1,6 +1,6 @@
 # Deployment acceptance record
 
-Status: pending selection of deployment target and operating requirements.
+Status: local Docker target selected; operating requirements and sign-off pending.
 Passing CI and the disposable local drill does not complete production qualification.
 
 ## Agree on the deployment
@@ -49,3 +49,14 @@ For each requirement, record its target, observed result, evidence location,
 date and operator. Record unresolved failures explicitly. Update the operations
 readiness checkpoint only after the selected deployment meets its requirements.
 Do not infer acceptance from synthetic latency results or test counts.
+
+## Local Docker baseline — 2026-11-02
+
+Run `python scripts/container_qualification.py` after building `aegis-local`.
+The disposable Windows Docker Desktop run passed with 12 workspaces, 100 reads
+at concurrency four, p95 read latency 32.358 ms, container startup 1194.668 ms,
+backup 15.349 ms (163,840 bytes), and verified restore in a separate container
+1017.5 ms. Evidence is stored locally in
+`.aegis/verification/container-qualification.json`. The drill uses synthetic
+small data and does not establish a production RTO, RPO, backup schedule, or
+representative capacity. The operations checkpoint remains pending.
